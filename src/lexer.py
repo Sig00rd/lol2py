@@ -1,5 +1,6 @@
 import ply
 
+
 tokens = [
     'HAI',
     'KTHXBAI',
@@ -48,5 +49,9 @@ tokens = [
     'STRING',
     'NEWLINE',
     'COMMA',
+    'NUMBR',
+    'NUMBAR',
+    'YARN',
+    'TROOF',
 
 ]

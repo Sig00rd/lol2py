@@ -7,51 +7,56 @@ BTW, OBTW, TLDR, VISIBLE, MKAY?, O RLY?, YA RLY, OIC, MEBBE, NO WAI,
 GIMMEH, HOW DUZ I, YR, AN YR, IF U SAY SO, R, BOTH SAEM, DIFFRINT, AN,
 BOTH OF, EITHER OF, BIGGR OF, SMALLR OF, SUM OF, DIFF OF, PRODUKT OF,
 QUOSHUNT OF, MOD OF, MAEK, ALL OF, ANY OF, NOT, WIN, FAIL, NOOB,
-(0-9)*, (0-9)*.(0-9)*, (newline character), , , any character string
+NUMBER, FLOAT_NUMBER, STRING, NEWLINE, COMMA,
+NUMBR, NUMBAR, YARN, TROOF,
+LPAREN, RPAREN
 
 Lista produkcji:
 
-<program> 		::= HAI <nlc> <code_block> <nlc> KTHXBAI
-<code_block>		::= <statement> | <statement> <nlc> <code_block>
-<statement>		::= <loop> | <declaration> | <comment> | <print_block> |
-		    	    <if_block> | <input_block> | <func_decl> |
+<program>               ::= HAI <nlc> <code_block> <nlc> KTHXBAI
+<code_block>            ::= <statement> | <statement> <nlc> <code_block>
+<statement>             ::= <loop> | <declaration> | <comment> | <print_block> |
+                            <if_block> | <input_block> | <func_decl> |
                     	    <assignment> | <expression>
-<loop>			::= IM IN YR <label> WILE <expression> <nlc> <code_block>
-   		    	    <nlc> IM OUTTA YR <label>
-<declaration>		::= I HAS A <label> | I HAS A <label> ITZ <value>
-<comment>		::= BTW <string> | OBTW <string> TLDR
-<print_block>		::= VISIBLE <expression> <expression> … <expression> MKAY?
-<if_block>		::= O RLY? <nlc> YA RLY <nlc> <code_block> <nlc> OIC |
-		    	    O RLY? <nlc> YA RLY <nlc> <code_block> <nlc>
-		       	    <else_if_block> <nlc> OIC
-<else_if_block>		::= MEBBE <expression> <nlc> <code_block> <nlc>
-		    	    <else_if_block> | NO WAI <nlc> <code_block> |
-		            MEBBE <expression> <nlc> <code_block>
-<input_block>		::= GIMMEH <label>
-<func_decl>		::= HOW DUZ I <label> [[YR <label>] AN YR <label>…] <nlc>
-		    	    <code_block> <nlc> IF U SAY SO
-<assignment>		::= <label> R <expression>
-<expression>		::= <equals> | <both> | <not_equals> | <greater> | <less> |
-		    	    <add> | <sub> | <mul> | <div> | <mod> | <cast> |
-		    	    <either> | <all> | <any> | <not> | <func> | <label> |
-		    	    <atom>
-<equals>		::= BOTH SAEM <expression> AN <expression>
-<not_equals>		::= DIFFRINT <expression> AN <expression>
-<both>			::= BOTH OF <expression> AN <expression>
-<either>		::= EITHER OF <expression> AN <expression>
-<greater>		::= BIGGR OF <expression> AN <expression>
-<less>			::= SMALLR OF <expression> AN <expression>
-<add>			::= SUM OF <expression> AN <expression>
-<sub>			::= DIFF OF <expression> AN <expression>
-<mul>			::= PRODUKT OF <expression> AN <expression>
-<div>			::= QUOSHUNT OF <expression> AN <expression>
-<mod>			::= MOD OF <expression> AN <expression>
-<cast>			::= MAEK <expression> A <type>
-<all>			::= ALL OF <expression> [AN <expression> … ] MKAY?
-<any>			::= ANY OF <expression> [AN <expression> … ] MKAY?
-<not>			::= NOT <expression>
-<func>			::= <label> <expression> [<expression> … ] MKAY?
-<label>			::= (A-Za-z0-9)*
-<atom>			::= WIN | FAIL | NOOB | (0-9)* | (0-9)*.(0-9)* | "<string>"
-<string>		::= any character string
-<nlc>			::= (newline character) | ,
+<loop>                  ::= IM IN YR <label> WILE <expression> <nlc> <code_block>
+                            <nlc> IM OUTTA YR <label>
+<declaration>           ::= I HAS A <label> | I HAS A <label> ITZ <value>
+<comment>               ::= BTW <string> | OBTW <string> TLDR
+<print_block>           ::= VISIBLE <expression> <expression> … <expression> MKAY?
+<if_block>              ::= O RLY? <nlc> YA RLY <nlc> <code_block> <nlc> OIC |
+		    	            O RLY? <nlc> YA RLY <nlc> <code_block> <nlc>
+		       	            <else_if_block> <nlc> OIC
+<else_if_block>         ::= MEBBE <expression> <nlc> <code_block> <nlc>
+		    	            <else_if_block> | NO WAI <nlc> <code_block> |
+		                    MEBBE <expression> <nlc> <code_block>
+<input_block>           ::= GIMMEH <label>
+<func_decl>             ::= HOW DUZ I <label> LPAREN [ YR <label> ] AN YR <label> … RPAREN <nlc>
+		    	            <code_block> <nlc> IF U SAY SO
+<func_args>             ::= LPAREN YR LABEL RPAREN |
+<assignment>            ::= <label> R <expression>
+<expression>            ::= <equals> | <both> | <not_equals> | <greater> | <less> |
+		    	            <add> | <sub> | <mul> | <div> | <mod> | <cast> |
+		    	            <either> | <all> | <any> | <not> | <func> | <label> |
+		    	            <atom>
+<equals>                ::= BOTH SAEM <expression> AN <expression>
+<not_equals>            ::= DIFFRINT <expression> AN <expression>
+<both>                  ::= BOTH OF <expression> AN <expression>
+<either>                ::= EITHER OF <expression> AN <expression>
+<greater>               ::= BIGGR OF <expression> AN <expression>
+<less>                  ::= SMALLR OF <expression> AN <expression>
+<add>                   ::= SUM OF <expression> AN <expression>
+<sub>                   ::= DIFF OF <expression> AN <expression>
+<mul>                   ::= PRODUKT OF <expression> AN <expression>
+<div>                   ::= QUOSHUNT OF <expression> AN <expression>
+<mod>                   ::= MOD OF <expression> AN <expression>
+<cast>                  ::= MAEK <expression> A <type>
+<type>                  ::= NUMBR | NUMBAR | YARN | TROOF
+<all>                   ::= ALL OF <expression> <an_expressions> MKAY?
+<an_expressions>         ::= LPAREN AN <expression> RPAREN | LPAREN AN <expression> RPAREN <an_expressions>
+<any>                   ::= ANY OF <expression> <an_expressions> MKAY?
+<not>                   ::= NOT <expression>
+<func>                  ::= <label> <multiple_expressions>
+<multiple_expressions>  ::= <expression> | <expression> <multiple_expressions>
+<label>                 ::= STRING
+<atom>                  ::= WIN | FAIL | NOOB | NUMBER | NUMBER_FLOAT | "STRING"
+<nlc>                   ::= NEWLINE | COMMA
