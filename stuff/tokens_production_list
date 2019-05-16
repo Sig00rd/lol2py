@@ -22,7 +22,7 @@ Lista produkcji:
                             <nlc> IM OUTTA YR <label>
 <declaration>           ::= I HAS A <label> | I HAS A <label> ITZ <value>
 <comment>               ::= BTW <string> | OBTW <string> TLDR
-<print_block>           ::= VISIBLE <expression> <expression> … <expression> MKAY?
+<print_block>           ::= VISIBLE <multiple_expressions> MKAY?
 <if_block>              ::= O RLY? <nlc> YA RLY <nlc> <code_block> <nlc> OIC |
 		    	            O RLY? <nlc> YA RLY <nlc> <code_block> <nlc>
 		       	            <else_if_block> <nlc> OIC
@@ -30,9 +30,10 @@ Lista produkcji:
 		    	            <else_if_block> | NO WAI <nlc> <code_block> |
 		                    MEBBE <expression> <nlc> <code_block>
 <input_block>           ::= GIMMEH <label>
-<func_decl>             ::= HOW DUZ I <label> LPAREN [ YR <label> ] AN YR <label> … RPAREN <nlc>
+<func_decl>             ::= HOW DUZ I <label> LPAREN <func_args> <nlc>
 		    	            <code_block> <nlc> IF U SAY SO
-<func_args>             ::= LPAREN YR LABEL RPAREN |
+<func_args>             ::= LPAREN YR LABEL RPAREN | LPAREN YR LABEL <additional_args> RPAREN
+<additional_args>       ::= LPAREN AN YR LABEL RPAREN | LPAREN AN YR LABEL <additional_args> RPAREN
 <assignment>            ::= <label> R <expression>
 <expression>            ::= <equals> | <both> | <not_equals> | <greater> | <less> |
 		    	            <add> | <sub> | <mul> | <div> | <mod> | <cast> |
