@@ -134,13 +134,13 @@ class lolcodeVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by lolcodeParser#all.
-    def visitAll(self, ctx:lolcodeParser.AllContext):
+    # Visit a parse tree produced by lolcodeParser#r_all.
+    def visitR_all(self, ctx:lolcodeParser.R_allContext):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by lolcodeParser#any.
-    def visitAny(self, ctx:lolcodeParser.AnyContext):
+    # Visit a parse tree produced by lolcodeParser#r_any.
+    def visitR_any(self, ctx:lolcodeParser.R_anyContext):
         return self.visitChildren(ctx)
 
 

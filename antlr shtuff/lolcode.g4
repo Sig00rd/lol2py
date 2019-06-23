@@ -26,7 +26,7 @@ loop
 
 declaration
    : 'I HAS A' LABEL
-   | 'I HAS A' LABEL 'ITZ' < value >
+   | 'I HAS A' LABEL 'ITZ' ATOM
    ;
 
 comment
@@ -74,8 +74,8 @@ expression
    | mod
    | cast
    | either
-   | all
-   | any
+   | r_all
+   | r_any
    | nope
    | func
    | LABEL
@@ -130,11 +130,11 @@ cast
    : 'MAEK' expression 'A' < type >
    ;
 
-all
+r_all
    : 'ALL OF' expression ('AN' expression)* 'MKAY?'
    ;
 
-any
+r_any
    : 'ANY OF' expression ('AN' expression)* 'MKAY?'
    ;
 
@@ -153,14 +153,18 @@ LABEL
 
 
 ATOM
-   : 'WIN' | 'FAIL' | 'NOOB' | ('0' .. '9') + | ('0' .. '9')* '.' ('0' .. '9')* | STRING
+   : BOOLEAN | 'NOOB' | ('0' .. '9') + | ('0' .. '9')* '.' ('0' .. '9')* | STRING
    ;
 
+BOOLEAN
+    : 'WIN' | 'FAIL'
+    ;
 
 STRING
    : '"' ('\'"' | ~ '"')* '"'
    ;
 
+//nie jestem właściwie pewna, czy powinniśmy usuwac \n z whitespace'ow i jak to potem ogarnac
 
 WS
    : [ \r\n] -> skip
