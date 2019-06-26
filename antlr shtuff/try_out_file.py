@@ -1,27 +1,30 @@
+import sys
+
 from antlr4 import *
-from lolcodeParser import lolcodeParser
-from lolcodeLexer import lolcodeLexer
-from lolcodeListener import lolcodeListener
+from antlr.lolcodeParser import lolcodeParser
+from antlr.lolcodeLexer import lolcodeLexer
+from antlr.lolcodeListener import lolcodeListener
+from antlr.lolcodeCustomListener import lolcodeCustomListener
 
 
-class lolcodePrintListener(lolcodeListener):
-    def enterHi(self, ctx):
-        print("Hello %s!" % ctx.ID())
+def syntaxError(self, recognizer, offendingSymbol, line, column, msg, e):
+    self.output.write(msg)
+    self._symbol = offendingSymbol.text
 
 
 def main():
-    lexer = lolcodeLexer(StdinStream())
+    print("start")
+    input = FileStream("input_file.txt")
+    lexer = lolcodeLexer(input)
     stream = CommonTokenStream(lexer)
     parser = lolcodeParser(stream)
-    tree = parser.hi()
-    printer = lolcodePrintListener()
+    tree = parser.program()
+
+    lolcodeChat = lolcodeCustomListener("output.txt")
     walker = ParseTreeWalker()
-    walker.walk(printer, tree)
+    walker.walk(lolcodeChat, tree)
 
-
-if __name__ == '__main__':
-    main()
-
+main()
 # A (hopefully) helpful note regarding antlr
 # so, it can be used with pycharm, you just have to install the antlr jetbrains plugin
 # I've had some weird errors when I tried to install it normally, so I've installed an older version,

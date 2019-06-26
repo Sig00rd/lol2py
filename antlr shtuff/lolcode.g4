@@ -1,7 +1,7 @@
 grammar lolcode;
 
 program
-   : 'HAI' code_block 'KTHXBYE'?
+   : 'HAI' NEWLINE code_block 'KTHXBYE'?
    ;
 
 code_block
@@ -9,19 +9,19 @@ code_block
    ;
 
 statement
-   : loop
-   | declaration
-   | comment
-   | print_block
-   | if_block
-   | input_block
-   | func_decl
-   | assignment
-   | expression
+   : loop NEWLINE
+   | declaration NEWLINE
+   | comment NEWLINE
+   | print_block NEWLINE
+   | if_block NEWLINE
+   | input_block NEWLINE
+   | func_decl NEWLINE
+   | assignment NEWLINE
+   | full_expression
    ;
 
 loop
-   : 'IM IN YR' LABEL 'WILE' expression code_block 'IM OUTTA YR' LABEL
+   : 'IM IN YR' LABEL 'WILE' full_expression code_block 'IM OUTTA YR' LABEL
    ;
 
 declaration
@@ -39,14 +39,14 @@ print_block
    ;
 
 if_block
-   : 'O RLY?' 'YA RLY' code_block 'OIC'
-   | 'O RLY?' 'YA RLY' code_block else_if_block 'OIC'
+   : 'O RLY?' NEWLINE 'YA RLY' NEWLINE code_block 'OIC'
+   | 'O RLY?' NEWLINE 'YA RLY' NEWLINE code_block else_if_block 'OIC'
    ;
 
 else_if_block
-   : 'MEBBE' expression code_block else_if_block
-   | 'NO WAI' code_block
-   | 'MEBBE' expression code_block
+   : 'MEBBE' full_expression code_block else_if_block
+   | 'NO WAI' NEWLINE code_block
+   | 'MEBBE' full_expression code_block
    ;
 
 input_block
@@ -54,11 +54,15 @@ input_block
    ;
 
 func_decl
-   : 'HOW DUZ I' LABEL (('YR' LABEL) ('AN YR' LABEL)*)? code_block 'IF U SAY SO'
+   : 'HOW DUZ I' LABEL (('YR' LABEL) ('AN YR' LABEL)*)? NEWLINE code_block NEWLINE 'IF U SAY SO'
    ;
 
 assignment
    : LABEL 'R' expression
+   ;
+
+full_expression
+   : expression NEWLINE
    ;
 
 expression
@@ -83,47 +87,47 @@ expression
    ;
 
 equals
-   : 'BOTH SAEM' expression 'AN' expression
+   : 'BOTH SAEM' expression r_an
    ;
 
 not_equals
-   : 'DIFFRINT' expression 'AN' expression
+   : 'DIFFRINT' expression r_an
    ;
 
 both
-   : 'BOTH OF' expression 'AN' expression
+   : 'BOTH OF' expression r_an
    ;
 
 either
-   : 'EITHER OF' expression 'AN' expression
+   : 'EITHER OF' expression r_an
    ;
 
 greater
-   : 'BIGGR OF' expression 'AN' expression
+   : 'BIGGR OF' expression r_an
    ;
 
 less
-   : 'SMALLR OF' expression 'AN' expression
+   : 'SMALLR OF' expression r_an
    ;
 
 add
-   : 'SUM OF' expression 'AN' expression
+   : 'SUM OF' expression r_an
    ;
 
 sub
-   : 'DIFF OF' expression 'AN' expression
+   : 'DIFF OF' expression r_an
    ;
 
 mul
-   : 'PRODUKT OF' expression 'AN' expression
+   : 'PRODUKT OF' expression r_an
    ;
 
 div
-   : 'QUOSHUNT OF' expression 'AN' expression
+   : 'QUOSHUNT OF' expression r_an
    ;
 
 mod
-   : 'MOD OF' expression 'AN' expression
+   : 'MOD OF' expression r_an
    ;
 
 cast
@@ -143,17 +147,23 @@ nope
    ;
 
 func
-   : LABEL expression + 'MKAY?'
+   : 'I IZ' LABEL expression ('AN' expression)* 'MKAY?'
    ;
 
-
-LABEL
-   : ('a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_') +
+r_an
+   : 'AN' expression
    ;
 
+not_newline
+   : '...' NEWLINE
+   ;
 
 ATOM
    : BOOLEAN | 'NOOB' | ('0' .. '9') + | ('0' .. '9')* '.' ('0' .. '9')* | STRING
+   ;
+
+LABEL
+   : ('a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_') +
    ;
 
 BOOLEAN
@@ -166,6 +176,6 @@ STRING
 
 //nie jestem właściwie pewna, czy powinniśmy usuwac \n z whitespace'ow i jak to potem ogarnac
 
-WS
-   : [ \r\n] -> skip
-   ;
+WHITESPACE : ' ' -> skip ;
+
+NEWLINE : ('\r'? '\n' | '\r')+ | ',' ;
