@@ -1,0 +1,6 @@
+NAME= 12
+while NAME> 2:
+    print("NAME::")
+    NAME= NAME+ 2
+
+#"NAME"

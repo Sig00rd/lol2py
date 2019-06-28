@@ -30,12 +30,14 @@ declaration
    ;
 
 comment
-   : 'BTW' STRING
-   | 'OBTW' STRING 'TLDR'
+   : 'BTW' expression
+   | 'OBTW' NEWLINE full_expression 'TLDR'
+   | 'BTW' STRING
+   | 'OBTW' NEWLINE STRING NEWLINE 'TLDR'
    ;
 
 print_block
-   : 'VISIBLE' expression* 'MKAY?'?
+   : 'VISIBLE' STRING* expression* STRING* 'MKAY?'?
    ;
 
 if_block
@@ -171,8 +173,8 @@ BOOLEAN
     ;
 
 STRING
-   : '"' ('\'"' | ~ '"')* '"'
-   ;
+: '"' ('\'"' | ~ '"')* '"'
+;
 
 //nie jestem właściwie pewna, czy powinniśmy usuwac \n z whitespace'ow i jak to potem ogarnac
 

@@ -40,7 +40,7 @@ class lolcodeCustomListener(lolcodeListener):
         with open(self.output_name, 'w') as f:
             for item in self.help_list:
                 f.write("%s" % item)
-                print("%s" % item)
+                #print(item)
 
     # Enter a parse tree produced by lolcodeParser#code_block.
     def enterCode_block(self, ctx: lolcodeParser.Code_blockContext):
@@ -78,8 +78,8 @@ class lolcodeCustomListener(lolcodeListener):
             if '\n' in self.help_list[i] or ',' in self.help_list[i]:
                 self.help_list[i] = ":\n"
                 break
-        if ctx.getChild(self, 1) == ctx.getChild(self, ctx.getChildCount(self) - 1):
-            self.add_space -= 4 * " "
+        if ctx.getChild(1).getText() == ctx.getChild(ctx.getChildCount() - 1).getText():
+            self.add_space = self.add_space[:-4]
 
     # Enter a parse tree produced by lolcodeParser#declaration.
     def enterDeclaration(self, ctx: lolcodeParser.DeclarationContext):
@@ -88,9 +88,12 @@ class lolcodeCustomListener(lolcodeListener):
     # Exit a parse tree produced by lolcodeParser#declaration.
     def exitDeclaration(self, ctx: lolcodeParser.DeclarationContext):
         for index in range(0, len(ctx.children)):
-            if ctx.children[index].LABEL():
-                self.help_list.append(ctx.children[index].text + " ")
-            elif ctx.children[index].ATOM():
+            # LABEL type
+            if ctx.children[index].getSymbol().type == 44:
+                self.help_list.append(ctx.children[index].getText())
+                #print(ctx.children[index].getText() + "\n")
+            # ATOM type
+            elif ctx.children[index].getSymbol().type == 43:
                 if 'FAIL' in ctx.getText():
                     self.help_list.append("= False ")
                 elif 'WIN' in ctx.getText():
@@ -98,22 +101,20 @@ class lolcodeCustomListener(lolcodeListener):
                 elif 'NOOB' in ctx.getText():
                     self.help_list.append("= None ")
                 else:
-                    self.help_list.append("=" + ctx.children[index].text)
+                    self.help_list.append("= " + ctx.children[index].getText())
 
     # Enter a parse tree produced by lolcodeParser#comment.
     # w ostatecznej wersji poprawię te łąńcuchy, ale tutaj BTW mogą wygląda
     def enterComment(self, ctx: lolcodeParser.CommentContext):
-        if ctx.getChild(self, 0) == 'BTW':
-            self.help_list.append('#')
-            self.help_list.append(ctx.getText())
-        elif ctx.getChild(self, 0) == 'OBTW':
+        if 'OBTW' in ctx.getText():
             self.help_list.append("'''")
-            self.help_list.append(ctx.getText())
+        elif 'BTW' in ctx.getText():
+            self.help_list.append('#')
 
     # Exit a parse tree produced by lolcodeParser#comment.
     # how to invalidate the insides?
     def exitComment(self, ctx: lolcodeParser.CommentContext):
-        if ctx.getChild(ctx.getChildCount() - 1) == 'TLDR':
+        if 'TLDR' in ctx.getText():
             self.help_list.append("'''")
 
     # Enter a parse tree produced by lolcodeParser#print_block.
@@ -122,8 +123,11 @@ class lolcodeCustomListener(lolcodeListener):
 
     # Exit a parse tree produced by lolcodeParser#print_block.
     def exitPrint_block(self, ctx: lolcodeParser.Print_blockContext):
-        for i in range(self.help_list[::-1].index("print("), len(self.help_list) - 1):
+        res = len(self.help_list) - 1 - self.help_list[::-1].index("print(")
+        for i in range(res+2, len(self.help_list) - 1):
             self.help_list[i] = self.help_list[i] + " +"
+        if "+" in self.help_list[-1]:
+            self.help_list[-1] = self.help_list[-1].replace("+", "")
         self.help_list.append(")")
 
     # Enter a parse tree produced by lolcodeParser#if_block.
@@ -171,8 +175,8 @@ class lolcodeCustomListener(lolcodeListener):
     # Exit a parse tree produced by lolcodeParser#input_block.
     def exitInput_block(self, ctx: lolcodeParser.Input_blockContext):
         for index in range(0, len(ctx.children)):
-            if ctx.children[index].LABEL():
-                self.help_list.append(ctx.children[index].text + " = input()")
+            if ctx.children[index].getSymbol().type == 44:
+                self.help_list.append(ctx.children[index].getSymbol().text + " = input()")
 
     # Enter a parse tree produced by lolcodeParser#func_decl.
     def enterFunc_decl(self, ctx: lolcodeParser.Func_declContext):
@@ -197,11 +201,18 @@ class lolcodeCustomListener(lolcodeListener):
 
     # Enter a parse tree produced by lolcodeParser#assignment.
     def enterAssignment(self, ctx: lolcodeParser.AssignmentContext):
+        name = 0
         for index in range(0, len(ctx.children)):
-            if ctx.children[index].LABEL():
-                if name == 0:
-                    self.help_list.append(ctx.children[index].text+" = ")
-                    name = 1
+            if not isinstance(ctx.children[index], TerminalNode):
+                if ctx.children[index].LABEL():
+                    if name == 0:
+                        self.help_list.append(ctx.children[index].getSymbol().text+"= ")
+                        name = 1
+            else:
+                if ctx.children[index].getSymbol().type == 44:
+                    if name == 0:
+                        self.help_list.append(ctx.children[index].getSymbol().text+"= ")
+                        name = 1
 
     # Exit a parse tree produced by lolcodeParser#assignment.
     def exitAssignment(self, ctx: lolcodeParser.AssignmentContext):
@@ -219,6 +230,8 @@ class lolcodeCustomListener(lolcodeListener):
                 self.help_list.append("None ")
             else:
                 self.help_list.append(ctx.ATOM().getText())
+        elif ctx.LABEL():
+            self.help_list.append(ctx.LABEL().getText())
 
     # Exit a parse tree produced by lolcodeParser#expression.
     def exitExpression(self, ctx: lolcodeParser.ExpressionContext):
@@ -354,7 +367,7 @@ class lolcodeCustomListener(lolcodeListener):
     # DONE Enter a parse tree produced by lolcodeParser#nope.
     def enterNope(self, ctx: lolcodeParser.NopeContext):
         self.help_list.append("not ")
-        print("not" + ctx.getText())
+        print("not ", ctx.getText())
         pass
 
     # DONE Exit a parse tree produced by lolcodeParser#nope.
