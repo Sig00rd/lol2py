@@ -13,7 +13,7 @@ def syntaxError(self, recognizer, offendingSymbol, line, column, msg, e):
 
 
 def main():
-    input = FileStream("input_file4.txt")
+    input = FileStream("example/input_file4.txt")
     lexer = lolcodeLexer(input)
     stream = CommonTokenStream(lexer)
     parser = lolcodeParser(stream)

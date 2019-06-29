@@ -78,7 +78,6 @@ expression
    | mul
    | div
    | mod
-   | cast
    | either
    | r_all
    | r_any
@@ -132,10 +131,6 @@ mod
    : 'MOD OF' expression r_an
    ;
 
-cast
-   : 'MAEK' expression 'A' < type >
-   ;
-
 r_all
    : 'ALL OF' expression ('AN' expression)* 'MKAY?'
    ;
@@ -156,10 +151,6 @@ r_an
    : 'AN' expression
    ;
 
-not_newline
-   : '...' NEWLINE
-   ;
-
 ATOM
    : BOOLEAN | 'NOOB' | ('0' .. '9') + | ('0' .. '9')* '.' ('0' .. '9')* | STRING
    ;
@@ -173,8 +164,8 @@ BOOLEAN
     ;
 
 STRING
-: '"' ('\'"' | ~ '"')* '"'
-;
+    : '"' ('\'"' | ~ '"')* '"'
+    ;
 
 WHITESPACE : ' ' -> skip ;
 
