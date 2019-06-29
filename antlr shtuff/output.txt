@@ -1,6 +1,6 @@
-NAME= 12
-while NAME> 2:
-    print("NAME::")
-    NAME= NAME+ 2
-
+ID= 234
+AGE= 3
+def MAKEsTUFF(NAME,AGE):
+    print(not AGE)
+MAKEsTUFF(222, 12% , 4) 
 #"NAME"

@@ -56,7 +56,7 @@ input_block
    ;
 
 func_decl
-   : 'HOW DUZ I' LABEL (('YR' LABEL) ('AN YR' LABEL)*)? NEWLINE code_block NEWLINE 'IF U SAY SO'
+   : 'HOW DUZ I' LABEL (('YR' LABEL) ('AN YR' LABEL)*)? NEWLINE code_block 'IF U SAY SO'
    ;
 
 assignment
@@ -175,8 +175,6 @@ BOOLEAN
 STRING
 : '"' ('\'"' | ~ '"')* '"'
 ;
-
-//nie jestem właściwie pewna, czy powinniśmy usuwac \n z whitespace'ow i jak to potem ogarnac
 
 WHITESPACE : ' ' -> skip ;
 
