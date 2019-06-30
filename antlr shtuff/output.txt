@@ -1,0 +1,6 @@
+ID= 234
+AGE= 3
+def MAKEsTUFF(NAME,AGE):
+    print(AGE)
+MAKEsTUFF(222, 12% 4) 
+#"NAME"
